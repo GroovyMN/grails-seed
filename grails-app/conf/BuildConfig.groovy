@@ -6,10 +6,8 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 // grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-// uncomment (and adjust settings) to fork the JVM to isolate classpaths
-// grails.project.fork = [
-//   run: [maxMemory:1024, minMemory:64, debug:false, maxPerm:256]
-// ]
+def gebVersion = "0.9.0"
+def seleniumVersion = "2.21.0"
 
 grails.project.dependency.resolution = {
 	// Inherit Grails' default dependencies
@@ -39,8 +37,16 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-		// Specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
-		// runtime 'mysql:mysql-connector-java:5.1.22'
+		test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
+			exclude "xml-apis"
+		}
+		test("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
+		test("org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion")
+
+		test "org.gebish:geb-spock:$gebVersion"
+		test "org.gebish:geb-junit4:$gebVersion"
+
+		test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
 	}
 
 	plugins {
@@ -60,6 +66,11 @@ grails.project.dependency.resolution = {
 		compile ":build-test-data:2.0.5"
 		compile ":codenarc:0.18.1"
 		compile ":console:1.2"
+
+		test ":geb:$gebVersion"
+		test(":spock:0.7") {
+			exclude "spock-grails-support"
+		}
 
 		build ":tomcat:$grailsVersion"
 
