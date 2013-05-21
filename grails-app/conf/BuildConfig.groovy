@@ -46,14 +46,15 @@ grails.project.dependency.resolution = {
 	plugins {
 		runtime ":hibernate:$grailsVersion"
 		runtime ":jquery:1.8.3"
+
+		// Resources plugins
 		runtime ":resources:1.1.6"
+		runtime ":zipped-resources:1.0"
+		compile ":cache-headers:1.1.5"
+		runtime ":cached-resources:1.0"
+		runtime ":yui-minify-resources:0.1.5"
 
-		// Uncomment these (or add new ones) to enable additional resources capabilities
-		// runtime ":zipped-resources:1.0"
-		// runtime ":cached-resources:1.0"
-		// runtime ":yui-minify-resources:0.1.5"
-
-		// Installed plug-ins
+		// User installed plugins
 		compile ":build-info:1.2.4"
 		compile ":build-info-tag:0.3.1"
 		compile ":build-test-data:2.0.5"
