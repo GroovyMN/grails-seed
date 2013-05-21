@@ -54,6 +54,8 @@ grails.project.dependency.resolution = {
 		// runtime ":yui-minify-resources:0.1.5"
 
 		compile ":console:1.2"
+		compile ":build-info:1.2.4"
+		compile ":build-info-tag:0.3.1"
 		compile ":build-test-data:2.0.5"
 
 		build ":tomcat:$grailsVersion"
