@@ -47,7 +47,7 @@ grails.scaffolding.templates.domainSuffix = 'Instance'
 grails.json.legacy.builder = false
 // Enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
-// pPackages to include in Spring bean scanning
+// Packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 // Whether to disable processing of multi part requests
 grails.web.disable.multipart = false
