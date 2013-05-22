@@ -1,5 +1,4 @@
 /* Styles for mobile devices */
-
 @media screen and (max-width: 480px) {
 	.nav {
 		padding: 0.5em;
@@ -23,12 +22,12 @@
 		float: right;
 	}
 
-	/* pagination needs to wrap around floated buttons */
+	/* Pagination needs to wrap around floated buttons */
 	.pagination {
 		overflow: hidden;
 	}
 
-	/* slightly smaller margin around content body */
+	/* Slightly smaller margin around content body */
 	fieldset,
 	.property-list {
 		padding: 0.3em 1em 1em;
@@ -46,7 +45,7 @@
 		width: auto;
 	}
 
-	/* hide all but the first column of list tables */
+	/* Hide all but the first column of list tables */
 	.scaffold-list td:not(:first-child),
 	.scaffold-list th:not(:first-child) {
 		display: none;
@@ -56,7 +55,7 @@
 		text-align: center;
 	}
 
-	/* stack form elements */
+	/* Stack form elements */
 	.fieldcontain {
 		margin-top: 0.6em;
 	}
