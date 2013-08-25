@@ -50,6 +50,9 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
+		def env = grails.util.Environment.currentEnvironment.name
+		def localEnvs = ["development", "test"]
+
 		runtime ":hibernate:$grailsVersion"
 		runtime ":jquery:1.8.3"
 
@@ -64,8 +67,11 @@ grails.project.dependency.resolution = {
 		compile ":build-info:1.2.4"
 		compile ":build-info-tag:0.3.1"
 		compile ":build-test-data:2.0.5"
-		compile ":codenarc:0.18.1"
-		compile ":console:1.2"
+		compile ":codenarc:0.19"
+
+		if (env in localEnvs) {
+			compile ":console:1.2"
+		}
 
 		test ":geb:$gebVersion"
 		test(":spock:0.7") {
@@ -74,8 +80,8 @@ grails.project.dependency.resolution = {
 
 		build ":tomcat:$grailsVersion"
 
-		runtime ":database-migration:1.3.2"
+		runtime ":database-migration:1.3.5"
 
-		compile ':cache:1.0.1'
+		compile ':cache:1.1.1'
 	}
 }
