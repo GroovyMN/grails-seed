@@ -6,18 +6,21 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 // grails.project.war.file = "target/${appName}-${appVersion}.war"
 
-def gebVersion = "0.9.0"
-def seleniumVersion = "2.21.0"
+def gebVersion = "0.9.3"
+def seleniumVersion = "2.42.0"
+
+grails.project.dependency.resolver = "maven"
 
 grails.project.dependency.resolution = {
+	// legacyResolve true // Wait for Gradle
+
 	// Inherit Grails' default dependencies
 	inherits("global") {
 		// Specify dependency exclusions here; for example, uncomment this to disable ehcache:
 		// excludes 'ehcache'
 	}
-	log "error" // Log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+	log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
 	checksums true // Whether to verify checksums on resolve
-	legacyResolve false // Whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
 	repositories {
 		inherits true // Whether to inherit repository definitions from plugins
@@ -29,58 +32,48 @@ grails.project.dependency.resolution = {
 		mavenLocal()
 		mavenCentral()
 
-		// Uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
-		// mavenRepo "http://snapshots.repository.codehaus.org"
-		// mavenRepo "http://repository.codehaus.org"
-		// mavenRepo "http://download.java.net/maven/2/"
-		// mavenRepo "http://repository.jboss.com/maven2/"
+		// Geb
+		mavenRepo "https://nexus.codehaus.org/content/repositories/snapshots"
 	}
 
 	dependencies {
-		test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
-			exclude "xml-apis"
-		}
+		test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion")
 		test("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
 		test("org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion")
 
 		test "org.gebish:geb-spock:$gebVersion"
 		test "org.gebish:geb-junit4:$gebVersion"
-
-		test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
 	}
 
 	plugins {
 		def env = grails.util.Environment.currentEnvironment.name
 		def localEnvs = ["development", "test"]
 
-		runtime ":hibernate:$grailsVersion"
-		runtime ":jquery:1.8.3"
+		runtime ':hibernate:3.6.10.6'
+		runtime ":jquery:1.10.2.2"
 
 		// Resources plugins
-		runtime ":resources:1.1.6"
+		runtime ":resources:1.2.8"
 		runtime ":zipped-resources:1.0"
-		compile ":cache-headers:1.1.5"
+		runtime ":cache-headers:1.1.7"
 		runtime ":cached-resources:1.0"
 		runtime ":yui-minify-resources:0.1.5"
 
 		// User installed plugins
-		compile ":build-info:1.2.4"
+		compile ":build-info:1.2.6"
 		compile ":build-info-tag:0.3.1"
-		compile ":build-test-data:2.0.5"
-		compile ":codenarc:0.19"
+		compile ":build-test-data:2.2.1"
+		compile ":codenarc:0.21"
 
 		if (env in localEnvs) {
 			compile ":console:1.2"
 		}
 
+		build ':tomcat:7.0.47'
+
 		test ":geb:$gebVersion"
-		test(":spock:0.7") {
-			exclude "spock-grails-support"
-		}
 
-		build ":tomcat:$grailsVersion"
-
-		runtime ":database-migration:1.3.5"
+		runtime ":database-migration:1.4.0"
 
 		compile ':cache:1.1.1'
 	}
