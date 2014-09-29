@@ -11,35 +11,54 @@
 // }
 
 grails.project.groupId = appName // Change this to alter the default package name and Maven publishing destination
-grails.mime.file.extensions = true // Enables the parsing of file extensions from URLs into the request format
-grails.mime.use.accept.header = false
-grails.mime.types = [
-	all: '*/*',
-	atom: 'application/atom+xml',
-	css: 'text/css',
-	csv: 'text/csv',
-	form: 'application/x-www-form-urlencoded',
-	html: ['text/html', 'application/xhtml+xml'],
-	js: 'text/javascript',
-	json: ['application/json', 'text/json'],
-	multipartForm: 'multipart/form-data',
-	rss: 'application/rss+xml',
-	text: 'text/plain',
-	xml: ['text/xml', 'application/xml']
+
+// The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
+grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
+grails.mime.types = [ // The first one is the default format
+                      all          : '*/*', // 'all' maps to '*' or the first available format in withFormat
+                      atom         : 'application/atom+xml',
+                      css          : 'text/css',
+                      csv          : 'text/csv',
+                      form         : 'application/x-www-form-urlencoded',
+                      html         : ['text/html', 'application/xhtml+xml'],
+                      js           : 'text/javascript',
+                      json         : ['application/json', 'text/json'],
+                      multipartForm: 'multipart/form-data',
+                      rss          : 'application/rss+xml',
+                      text         : 'text/plain',
+                      hal          : ['application/hal+json', 'application/hal+xml'],
+                      xml          : ['text/xml', 'application/xml']
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
 // grails.urlmapping.cache.maxsize = 1000
 
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
+// Legacy setting for codec used to encode data with ${}
+grails.views.default.codec = "html"
 
-// The default codec used to encode data with ${}
-grails.views.default.codec = "none" // none, html, base64
-grails.views.gsp.encoding = "UTF-8"
+// The default scope for controllers. May be prototype, session or singleton.
+// If unspecified, controllers are prototype scoped.
+grails.controllers.defaultScope = 'singleton'
+
+// GSP settings
+grails {
+	views {
+		gsp {
+			encoding = 'UTF-8'
+			htmlcodec = 'xml' // use xml escaping instead of HTML4 escaping
+			codecs {
+				expression = 'html' // escapes values inside ${}
+				scriptlet = 'html' // escapes output from scriptlets in GSPs
+				taglib = 'none' // escapes output from taglibs
+				staticparts = 'none' // escapes output from static template parts
+			}
+		}
+		// Escapes all not-encoded output at final stage of outputting
+		// filteringCodecForContentType.'text/html' = 'html'
+	}
+}
+
 grails.converters.encoding = "UTF-8"
-// Enable Sitemesh preprocessing of GSP pages
-grails.views.gsp.sitemesh.preprocess = true
 // Scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = 'Instance'
 
@@ -58,6 +77,12 @@ grails.exceptionresolver.params.exclude = ['password']
 // Configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
+// Configure passing transaction's read-only attribute to Hibernate session, queries and criterias
+// Set "singleSession = false" OSIV mode in hibernate configuration after enabling
+grails.hibernate.pass.readonly = false
+// Configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
+grails.hibernate.osiv.readonly = false
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
@@ -72,13 +97,14 @@ environments {
 }
 
 // log4j configuration
-log4j = {
+log4j.main = {
 	// Example of changing the log pattern for the default console appender:
+	//
 	// appenders {
-	//     console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+	//  console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
 	// }
 
-	error 'org.codehaus.groovy.grails.web.servlet',    // Controllers
+	error 'org.codehaus.groovy.grails.web.servlet',        // Controllers
 		'org.codehaus.groovy.grails.web.pages',          // GSP
 		'org.codehaus.groovy.grails.web.sitemesh',       // Layouts
 		'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
